@@ -1,100 +1,148 @@
 import pygame
 import sys
+import os
+
 from pygame.math import Vector2
+# Class nhân vật
+class Soldier(pygame.sprite.Sprite):
+    # Khởi tạo
+    def __init__(self,x,y,scale,speed):
+        pygame.sprite.Sprite.__init__(self)
+        self.isAlive = True
+        self.speed = speed
+        self.velocity_y = 0
+
+        self.isJump = False
+        self.isIn_air = False
+        self.isMove_left = False
+        self.isMove_right = False
+        self.isFlip = False
+        self.animation_list = []
+        self.frame_index = 0
+        self.action = 0
+
+        self.update_time = pygame.time.get_ticks()
+        # Animation
+        animation_type = ['Idle','Run','Jump']
+        for animation in animation_type:
+            num_of_animations = os.listdir(f'assets/images/player/{animation}')
+            temp_list = []
+            for i in range(len(num_of_animations)):
+                characterImage = pygame.image.load(f'assets/images/player/{animation}/{i}.png')
+                characterImage = pygame.transform.scale(characterImage,(characterImage.get_width()*scale, characterImage.get_height()*scale))
+                temp_list.append(characterImage)
+            self.animation_list.append(temp_list)
+
+        self.characterImage = self.animation_list[self.action][self.frame_index]
+        self.rect = self.characterImage.get_rect()
+        self.rect.center = (x,y)
+    # Di chuyển
+    def move (self):
+        # Độ thay đổi
+        dx = 0
+        dy = 0
+        # Sang trái hay phải
+        if self.isMove_left:
+            dx = -self.speed
+            self.isFlip = True
+        if self.isMove_right:
+            dx = self.speed
+            self.isFlip = False
+        # Nhảy
+        if self.isJump and self.isIn_air == False:
+            self.velocity_y = -11
+            self.isJump = False
+            self.isIn_air = True
+        # Trọng lực
+        self.velocity_y += GRAVITY
+        if self.velocity_y > 10:
+            self.velocity_y = 10
+        dy += self.velocity_y
+        # Collision
+        if self.rect.bottom + dy > 300:
+            dy = 300 - self.rect.bottom
+            self.isIn_air = False
+        # Update vị trí
+        self.rect.x += dx
+        self.rect.y += dy
+
+    def update_animation(self):
+        ANIMATION_COOLDOWN = 100
+        self.characterImage = self.animation_list[self.action][self.frame_index]
+        if pygame.time.get_ticks() - self.update_time > ANIMATION_COOLDOWN:
+            self.update_time = pygame.time.get_ticks()
+            self.frame_index +=1
+        if self.frame_index >= len(self.animation_list[self.action]):
+            self.frame_index = 0
+
+    def update_action(self, new_action):
+        if new_action != self.action:
+            self.action = new_action
+            self.frame_index =0
+            self.update_time = pygame.time.get_ticks()
+    # Vẽ UI
+    def draw(self):
+        screen.blit(pygame.transform.flip(self.characterImage, self.isFlip, False), self.rect)
+# Tạo ng chơi     
+player = Soldier(200,200,3,5)
+# Trọng lực
+GRAVITY = 0.75
+# Cấu hình cửa sổ game
+screen_width = 1280
+screen_height = 720
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("ConTra")
+# FPS
+clock = pygame.time.Clock()
+FPS = 60
+# Đọc hình ảnh cho biểu tượng
+#icon_image = pygame.image.load("assets/images/TankRed_FullCase.png")  # Đường dẫn tới hình ảnh biểu tượng
+#pygame.display.set_icon(icon_image)
+#Màu
+BACKGROUND = (144, 201, 120)
+RED = (255, 0, 0)
+def draw_bg(BG):
+    screen.fill(BG)
+    pygame.draw.line(screen, RED, (0,300), (screen_width, 300))
 # Hàm main chính
 def main():
     # Khởi tạo pygame
     pygame.init()
-
-    # Cấu hình cửa sổ game
-    screen_width = 1280
-    screen_height = 720
-    screen = pygame.display.set_mode((screen_width, screen_height))
-    pygame.display.set_caption("Tank Attack")
-
-    x = 32
-    y = 32
-    vel = 0.25
-
-    tank_angle = 0
-    turret_angle = 0
-    tank_direction = Vector2(0, 1)
-    
-# Đọc hình ảnh cho biểu tượng
-    icon_image = pygame.image.load("assets/images/TankRed_FullCase.png")  # Đường dẫn tới hình ảnh biểu tượng
-    pygame.display.set_icon(icon_image)
-
-    # Khởi tạo đối tượng Game
-
-    tank_image = pygame.image.load("assets/images/TankBase_Red.png")
-    turret_image = pygame.image.load("assets/images/TankTurret_Red.png")
-    bullet_image = pygame.image.load("assets/images/TankBullet_Red.png")
-
-    bullets = []
-    bullet_speed = 1.0
-
-    font = pygame.font.SysFont(None, 24)
     # Vòng lặp chính của trò chơi
-    while True:
+    run = True;
+    while run:
+        clock.tick(FPS)
+
+        draw_bg(BACKGROUND)
+        player.update_animation()
+        player.draw()
+        if player.isAlive:
+            if player.isIn_air:
+                player.update_action(2)
+            elif player.isMove_left or player.isMove_right:
+                player.update_action(1)
+            else:
+                player.update_action(0)
+            player.move()
         # Xử lý sự kiện
         for event in pygame.event.get():
+            # Thoát game
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    # Tạo đạn mới
-                    bullet = {
-                        'pos': Vector2(x, y),  # Vị trí xuất phát của đạn là vị trí hiện tại của tháp tank
-                        'dir': tank_direction,  # Hướssssng của đạn là hướng của tháp tank
-                    }
-                    bullets.append(bullet)
+                run = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_a:
+                    player.isMove_left = True
+                if event.key == pygame.K_d:
+                    player.isMove_right = True
+                if event.key == pygame.K_w:
+                    player.isJump = True
 
-        keys = pygame.key.get_pressed()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_a:
+                    player.isMove_left = False
+                if event.key == pygame.K_d:
+                    player.isMove_right = False
 
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            # x -= vel
-            tank_angle += 0.25
-            turret_angle += 0.25
-        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            # x += vel
-            turret_angle -= 0.25
-            tank_angle -= 0.25
-        if keys[pygame.K_q]:
-            turret_angle -= 0.25
-        if keys[pygame.K_e]:
-            turret_angle += 0.25
-
-        tank_direction = Vector2(0, -1).rotate(tank_angle)
-
-        if keys[pygame.K_UP] or keys[pygame.K_w]:
-            x -= vel * tank_direction.x
-            y += vel * tank_direction.y
-        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            x += vel * tank_direction.x
-            y -= vel * tank_direction.y
-        
-        for bullet in bullets:
-            bullet['pos'] += bullet['dir'] * bullet_speed
-            # Kiểm tra nếu viên đạn ra khỏi màn hình thì loại bỏ nó khỏi danh sách
-            if bullet['pos'].x < 0 or bullet['pos'].x > screen_width or bullet['pos'].y < 0 or bullet['pos'].y > screen_height:
-                bullets.remove(bullet)
-        
-
-        screen.fill((0, 0, 0))
-        rotated_tank = pygame.transform.rotate(tank_image, tank_angle)
-        screen.blit(rotated_tank, (x, y))
-        
-        rotated_turret = pygame.transform.rotate(turret_image, turret_angle)
-        turret_pos = Vector2(x, y) + Vector2(rotated_tank.get_rect().center)
-        screen.blit(rotated_turret, rotated_turret.get_rect(center=turret_pos))        
-                    
-        # text_surface = font.render(f'X: {x}, Y: {y}', True, (255, 255, 255))
-        # # Vẽ văn bản lên màn hình
-        # screen.blit(text_surface, (10, 10))
-        for bullet in bullets:
-            screen.blit(bullet_image, bullet['pos'])
-        # pygame.draw.rect(screen, (255, 0, 0), (x, y, width, height))
         pygame.display.update()
 
 
