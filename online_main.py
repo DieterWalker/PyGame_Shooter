@@ -1,5 +1,6 @@
 import pygame
 import sys
+from network import Network
 
 screen = pygame.display.set_mode((550, 550))
 pygame.display.set_caption("caro")
@@ -78,14 +79,30 @@ def is_win(board):
                         if score == 4:
                             return board[x][y]
     return -1
-                
+
 def main():
     global isClicking
     global game_over
-    p1_turn = True
+    your_turn = True
+    you_x = True
     board = make_empty_board(board_size)
+    n = Network()
+    start = n.getTurn()
+    n.send([-1,-1,-1])
+    if start == 2:
+        your_turn = False
+        you_x = False
+
+
     while True:
-        draw_screen(img_empty, img_x, img_o, rect, board)
+        p2 = n.recieve()
+        print(p2)
+        if p2 != board:
+            board = p2
+            your_turn = True
+
+        play_pos = [-1,-1,-1] # chơi ở vị trí nào
+
         if game_over == False:
             if is_win(board) == 1:
                 game_over = True
@@ -103,18 +120,22 @@ def main():
                     print(tile_click_x)
                     tile_click_y = int(mouse_pos[1]/50)
                     print(tile_click_y)
-                    if board[tile_click_x][tile_click_y] == 0 and p1_turn:
-                        board[tile_click_x][tile_click_y] = 1
-                        p1_turn = False
-                    elif board[tile_click_x][tile_click_y] == 0 and p1_turn == False:
-                        board[tile_click_x][tile_click_y] = 2
-                        p1_turn = True
+                    if board[tile_click_x][tile_click_y] == 0 and your_turn:
+                        if you_x:
+                            board[tile_click_x][tile_click_y] = 1
+                            play_pos = [tile_click_x, tile_click_y,1]
+                            your_turn = False
+                        else:
+                            board[tile_click_x][tile_click_y] = 2
+                            play_pos = [tile_click_x, tile_click_y,2]
+                            your_turn = False
                 if event.type == pygame.MOUSEBUTTONUP:
                     isClicking = False
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+        draw_screen(img_empty, img_x, img_o, rect, board)
+        n.send(play_pos)
         pygame.display.update()
 
-if __name__ == "__main__":
-    main() 
+main() 
