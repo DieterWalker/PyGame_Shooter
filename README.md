@@ -9,7 +9,7 @@ Additional features will be available in the future!
 - [Dieter Walker](https://github.com/DieterWalker)
 - [Nam Blue](https://github.com/nam050402)
 ## ScreenShot
-![Alternative text](./asset/readme_image/image_1.png)
+![Alternative text](./assets/readme_image/image_1.png)
 ## Dowloading project
 ```javascript
 $ git clone https://github.com/DieterWalker/PyGame_Shooter.git
