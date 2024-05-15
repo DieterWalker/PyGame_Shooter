@@ -1,20 +1,22 @@
 # Description
-A 2 Player Shooter Game
+Solder Shooter is a two-player fighting game, in which the main task of the players is to control their characters to shoot down the opponent's target character, bringing joy to everyone
 ## Features
-- Online Mode
-- Offline
-## Authors
-- [Quốc Duệ](https://github.com/DieterWalker)
-- [Giang Nam](https://github.com/khawgf)
+The game features 2 playing modes: 
+- Online Mode: Two players will play on separate devices. 
+- Offline Mode: Two players play on the same device
+Additional features will be available in the future!
+## Author
+- [Dieter Walker](https://github.com/DieterWalker)
+- [Nam Blue](https://github.com/nam050402)
+## ScreenShot
+![Alternative text](./asset/readme_image/image_1.png)
 ## Dowloading project
 ```javascript
 $ git clone https://github.com/DieterWalker/PyGame_Shooter.git
-$ cd 
-$ python3 -m venv venv
-$ source venv/bin/activate
-$ pip3 install
+$ cd Pygame_Shooter
 ```
-## Installation Python3 and Pygame
+
+<!-- ## Installation Python3 and Pygame
 Update packetlist
 
 ```bash
@@ -62,4 +64,4 @@ Open port 80
 
 ```bash
 Sudo ufw allow 80/tcp
-```
+``` -->
