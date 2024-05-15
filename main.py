@@ -322,7 +322,9 @@ def receive_client_count_from_server():
                 pygame.display.flip()  
             elif client_count  == 2:
                 print("Full")
-                break
+                result_variable = calculate_seconds()
+                time.sleep(result_variable)
+                # break
         except Exception as e:
             print(f"Error receiving client count from server: {e}")
             break
@@ -504,5 +506,5 @@ def main_online(window):
     finally:
         close_connection()
 
-# if __name__ == "__main__":
-#     main_online(window)
+if __name__ == "__main__":
+    main_online(window)
