@@ -31,6 +31,7 @@ speed_shoot_2 = 500
 max_life = 10
 player1_lives = max_life
 player2_lives = max_life
+# player_ID = 0
 
 theme_sound = pygame.mixer.Sound("assets/sound/theme_1.mp3")
 jump_sound = pygame.mixer.Sound("assets/sound/jump.mp3")
@@ -231,9 +232,9 @@ def send_player_direction(direction):
     direction_data = f"CDR:{direction}|"
     client_socket.send(direction_data.encode())
 
-# def send_player_number(player_number):
-#     number = f"SERVER:{player_number}|"
-#     client_socket.send(number.encode())
+def send_player_number(player_number):
+    number = f"CID:{player_number}|"
+    client_socket.send(number.encode())
 
 def send_player_hp(hp1):
     direction_data = f"CLIVE:{hp1}|"
@@ -266,7 +267,6 @@ def receive_thread(player2, bullet2):
                     client_count = int(x[0])
             elif item.startswith("COORD:"):
                 data = item[6:] 
-                print(data)
                 x, y = builtins.map(int, data.rstrip('|').split())
                 player2.rect.x, player2.rect.y = x, y
             elif item.startswith("CLIVE:"):
@@ -316,12 +316,10 @@ def receive_client_count_from_server():
                         x = data.rstrip('|').split()
                         if x and x[0].isdigit():
                             client_count = int(x[0])
-            if client_count  == 1:
-                print("Not_Null")
+            if client_count != 2:
                 window.blit(wait_image, (0, 0))
                 pygame.display.flip()  
             elif client_count  == 2:
-                print("Full")
                 result_variable = calculate_seconds()
                 time.sleep(result_variable)
                 # break
@@ -353,8 +351,6 @@ def main_online(window):
     draw_waiting(window)
     connect_to_server("192.168.48.205", 8080)
     try:
-        player = player_online.Player(300, 100, 48, 48, player1_lives)
-        player2 = player_online_2.Player(600, 100, 48, 48, player2_lives)
         block_size = 48
         random_map_info = random.choice(maps_array)
         background, bg_image, floor = load_map(block_size, random_map_info)
@@ -376,24 +372,19 @@ def main_online(window):
         bullet1 = []
         bullet2 = []
         
+        player = player_online.Player(200, 200, 48, 48, player1_lives)
+        player2 = player_online_2.Player(700, 200, 48, 48, player2_lives)
+
         #count client
         receive_thread2l= threading.Thread(target=receive_client_count_from_server,args=())
         receive_thread2l.start()
 
-        
-        # receive_thread_x = threading.Thread(target=receive_thread_player, args=())
-        # receive_thread_x.start()
-        # if client_count == 0:
-        #     client_count = 1
-        # elif client_count == 1:
-        #     client_count = 2
-        # send_thread_number_player = threading.Thread(target=send_player_number, args=(client_count,))
-        # send_thread_number_player.start()
+        player.x_vel = random.randint(50, 950)
 
         run = True
         while run:
+
             clock.tick(FPS)
-            print ("server has: ", client_count)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
@@ -506,5 +497,5 @@ def main_online(window):
     finally:
         close_connection()
 
-if __name__ == "__main__":
-    main_online(window)
+# if __name__ == "__main__":
+#     main_online(window)

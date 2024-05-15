@@ -50,7 +50,7 @@ def main_menu():
     offline_rect = pygame.Rect(350, 500, 300, 50)
     while True:
         # screen.fill(DARK_BLUE)
-        draw_title("Solider Shooter")
+        draw_title("Soldier Shooter")
         # Lấy vị trí chuột
         mouse_pos = pygame.mouse.get_pos()
 
