@@ -10,11 +10,11 @@ Additional features will be available in the future!
 - [Nam Blue](https://github.com/nam050402)
 ## ScreenShot
 - Main Menu screen
-![Alternative text](./assets/readme_image/image_1.png)
-- In game screen
 ![Alternative text](./assets/readme_image/image_2.png)
-- Result Screen
+- In game screen
 ![Alternative text](./assets/readme_image/image_3.png)
+- Result Screen
+![Alternative text](./assets/readme_image/image_1.png)
 ## Dowloading project
 ```bash
 $ git clone https://github.com/DieterWalker/PyGame_Shooter.git
