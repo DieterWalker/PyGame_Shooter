@@ -4,7 +4,7 @@ A 2 Player Shooter Game
 - Online Mode
 - Offline
 ## Authors
-- [Quốc Duệ](https://github.com/haialibaba)
+- [Quốc Duệ](https://github.com/DieterWalker)
 - [Giang Nam](https://github.com/khawgf)
 ## Dowloading project
 ```javascript
