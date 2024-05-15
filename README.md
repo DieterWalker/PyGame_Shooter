@@ -8,8 +8,8 @@ A 2 Player Shooter Game
 - [Giang Nam](https://github.com/khawgf)
 ## Dowloading project
 ```javascript
-$ git clone https://github.com/haialibaba/FruitFightOnline.git
-$ cd FruitFightOnline
+$ git clone https://github.com/DieterWalker/PyGame_Shooter.git
+$ cd 
 $ python3 -m venv venv
 $ source venv/bin/activate
 $ pip3 install
