@@ -28,7 +28,7 @@ FPS = 60
 speed_shoot_1 = 500
 speed_shoot_2 = 500
 # Máu người chơi
-max_life = 5
+max_life = 10
 player1_lives = max_life
 player2_lives = max_life
 
@@ -504,5 +504,5 @@ def main_online(window):
     finally:
         close_connection()
 
-if __name__ == "__main__":
-    main_online(window)
+# if __name__ == "__main__":
+#     main_online(window)
