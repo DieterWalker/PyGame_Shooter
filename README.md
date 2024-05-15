@@ -64,9 +64,3 @@ Sudo ufw status verbose
 ```bash
 Sudo ufw enable
 ```
-
-Open port 80
-
-```bash
-Sudo ufw allow 80/tcp
-``` 
