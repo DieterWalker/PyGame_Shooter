@@ -3,6 +3,7 @@ import sys
 import Soldier_Shooter
 import subprocess
 import os
+import time
 # Khởi tạo Pygame
 pygame.init()
 
@@ -59,10 +60,11 @@ def main(title):
             draw_button("Continue", GRAY, continue_rect)
             if pygame.mouse.get_pressed()[0]:  # Kiểm tra xem nút chuột trái có được nhấn không
                 theme_sound.stop()
-                Soldier_Shooter.main_menu()
-                # subprocess.run(["python", "main_menu.py"])
-                # pygame.quit()
-                # sys.exit()
+                # Soldier_Shooter.main_menu()
+                subprocess.Popen(["python", "Soldier_Shooter.py"])
+                time.sleep(1)
+                pygame.quit()
+                sys.exit()
         else:
             draw_button("Continue", WHITE, continue_rect)
 
@@ -72,10 +74,12 @@ def main(title):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            break
 
         # Cập nhật màn hình
         pygame.display.flip()
 
-# Chạy chương trình
-if __name__ == "__main__":
-    main("aaaa")
+
+# # # Chạy chương trình
+# if __name__ == "__main__":
+#     main("aaaa")

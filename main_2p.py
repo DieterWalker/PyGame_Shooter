@@ -21,8 +21,8 @@ FPS = 60
 speed_shoot_1 = 500
 speed_shoot_2 = 500
 # Máu người chơi
-player1_lives = 1
-player2_lives = 1
+player1_lives = 10
+player2_lives = 10
 
 # Thiết lập cấu hình âm thanh
 theme_sound = pygame.mixer.Sound("assets/sound/theme_1.mp3")
@@ -315,5 +315,5 @@ def main(window):
     pygame.quit()
     quit()
 
-if __name__ == "__main__":
-    main(window)
+# if __name__ == "__main__":
+#     main(window)
