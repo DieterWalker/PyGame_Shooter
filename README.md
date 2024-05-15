@@ -9,14 +9,19 @@ Additional features will be available in the future!
 - [Dieter Walker](https://github.com/DieterWalker)
 - [Nam Blue](https://github.com/nam050402)
 ## ScreenShot
+- Main Menu screen
 ![Alternative text](./assets/readme_image/image_1.png)
+- In game screen
+![Alternative text](./assets/readme_image/image_2.png)
+- Result Screen
+![Alternative text](./assets/readme_image/image_3.png)
 ## Dowloading project
-```javascript
+```bash
 $ git clone https://github.com/DieterWalker/PyGame_Shooter.git
 $ cd Pygame_Shooter
 ```
 
-<!-- ## Installation Python3 and Pygame
+## Installation Python3 and Pygame
 Update packetlist
 
 ```bash
