@@ -3,7 +3,8 @@ Solder Shooter is a two-player fighting game, in which the main task of the play
 ## Features
 The game features 2 playing modes: 
 - Online Mode: Two players will play on separate devices. 
-- Offline Mode: Two players play on the same device
+- Offline Mode: Two players play on the same device.
+  
 Additional features will be available in the future!
 ## Author
 - [Dieter Walker](https://github.com/DieterWalker)
